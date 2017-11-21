@@ -1,0 +1,17 @@
+nav>*{
+	color:#FFFFFF;
+}
+
+nav a:visited, a:link {
+  color: #FFFFFF;
+}
+
+nav a.active {
+  color: #000;
+  background: #FFFFFF;
+  font-weight: bold;
+}
+
+header .btn-warning {
+	color: #343a40;
+}

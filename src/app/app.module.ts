@@ -5,14 +5,16 @@ import { FormsModule } from '@angular/forms';
 import { HttpModule }    from '@angular/http';
 
 import { AppComponent } from './app.component';
-import { LoginComponent } from './login/login.component';
-import { RegisterComponent } from './register/register.component';
+import { LoginComponent } from './components/login/login.component';
+import { RegisterComponent } from './components/register/register.component';
 import { AuthService } from './services/auth.service'
 import { AppRoutingModule } from './app-routing.module';
-import { DashboardComponent } from './dashboard/dashboard.component';
+import { DashboardComponent } from './components/dashboard/dashboard.component';
 import { ValidGuard } from './guard/valid.guard'
-import { LoginGuard } from './guard/loginRedirect.gaurd'
-
+import { LoginGuard } from './guard/loginRedirect.gaurd';
+import { HeaderComponent } from './components/header/header.component';
+import { BlogsComponent } from './components/blogs/blogs.component';
+import { BlogsService } from './services/blogs.service';
 
 
 @NgModule({
@@ -21,6 +23,8 @@ import { LoginGuard } from './guard/loginRedirect.gaurd'
     LoginComponent,
     RegisterComponent,
     DashboardComponent,
+    HeaderComponent,
+    BlogsComponent,
   ],
   imports: [
     BrowserModule,
@@ -32,7 +36,8 @@ import { LoginGuard } from './guard/loginRedirect.gaurd'
   providers: [
     AuthService,
     ValidGuard,
-    LoginGuard
+    LoginGuard,
+    BlogsService
   ],
   bootstrap: [AppComponent]
 })
