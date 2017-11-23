@@ -11,10 +11,11 @@ export class DashboardComponent implements OnInit {
   constructor(private auth:AuthService) { }
 
   ngOnInit() {
+    let token = localStorage.getItem('token');
+    this.auth.verify(token);
   }
 
   removeUser(){
-    console.log(localStorage.getItem('token'))
     this.auth.removeUser(localStorage.getItem('token'))
               .then(res => {
                 if (res === 'success'){

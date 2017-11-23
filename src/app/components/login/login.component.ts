@@ -1,5 +1,4 @@
 import { Component, OnInit } from '@angular/core';
-import { Router } from '@angular/router';
 import { AuthService } from '../../services/auth.service';
 import { User } from '../../models/user';
 
@@ -11,20 +10,22 @@ import { User } from '../../models/user';
 })
 export class LoginComponent implements OnInit {
 	private user:User = new User();
-	alrt:boolean = false;
+	alrt:string = "";
 
-	constructor(private router: Router,private auth:AuthService) { }
+	constructor(private auth:AuthService) { }
 
 	ngOnInit() {}
 
 	login(){
-		this.alrt = false
+		this.alrt = ""
 		this.auth.login(this.user)
-					.then(token => {
-						localStorage.setItem('token',token);
-						this.router.navigate(['/dashboard']);
-					})
-					.catch(err => this.alrt = true);
+					.then()
+					.catch(err => {
+						if (err.status!==400)
+							this.alrt = "Server error";
+						else
+							this.alrt = "Wrong credentials";
+					});
 	}
 
 }

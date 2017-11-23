@@ -1,11 +1,10 @@
-<header class="navbar navbar-dark bg-dark">
+<header class="p-3 navbar navbar-dark bg-danger">
   <nav class="nav">
     <a class="btn" routerLink="/dashboard" routerLinkActive="active">Dashboard</a>
     <a class="btn" routerLink="/blogs" routerLinkActive="active">Blogs</a>
-    <a class="btn" [ngClass]="{'d-none':loggedIn}" routerLink="/login" routerLinkActive="active">Login</a>
   </nav>
-  <button class="btn btn-secondary float-right"
-  [ngClass]="{'d-none':!loggedIn}" (click)="logout()"
-  routerLink="/register" 
-  routerLinkActive="active">Logout</button>
+  <button role='button' class="btn btn-light text-dark float-right"
+  [ngClass]="{'d-none':!loggedIn}" (click)="logout()" >Logout</button>
+  <a class="btn btn-light text-dark float-right" role='button'
+  [ngClass]="{'d-none':loggedIn}" routerLink="/login" >Login</a>
 </header>
