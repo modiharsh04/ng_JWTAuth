@@ -30,7 +30,7 @@ const routes: Routes = [
 		path:'blogs',
 		component:BlogsComponent
 	},
-	{ path:'', redirectTo: 'dashboard',pathMatch:'full'}
+	{ path:'', redirectTo: 'blogs',pathMatch:'full'}
 ];
 
 @NgModule({

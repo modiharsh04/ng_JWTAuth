@@ -1,6 +1,7 @@
 import { Injectable } from '@angular/core';
 import { Headers, Http } from '@angular/http';
 import { Router } from '@angular/router';
+import { JwtHelper, tokenNotExpired } from 'angular2-jwt';
 import 'rxjs/add/operator/toPromise';
 import { Subject } from 'rxjs/Rx';
 import { User } from '../models/user';
@@ -13,7 +14,11 @@ export class AuthService {
 	private isAuthenticated = new Subject<boolean>();
 	isAuth$ = this.isAuthenticated.asObservable();
 
-	constructor(private http:Http,private router:Router) { }
+	constructor(
+		private http:Http,
+		private router:Router,
+		private jwh:JwtHelper
+		) { }
 
 	login(user:User): Promise<any> {
 		let url = `${this.BASE_URL}/login`;
@@ -31,31 +36,6 @@ export class AuthService {
 		                .catch(this.handleError);
 	}
 
-	verify(token:string): Promise<any>{
-		let url = `${this.BASE_URL}/verify`;
-		let data = {
-			'token': `${token}`
-		};
-		return this.http.post(url,data,{headers : this.headers})
-						.toPromise()
-						.then(res => {
-							if (res.json().token !== token)
-								this.logout();
-							Promise.resolve(true);
-						})
-		                .catch(err => {
-		                	this.isAuthenticated.next(false);
-		                	this.handleError(err);
-		                });
-	}
-
-	loginSuccess(token:string){
-		this.isAuthenticated.next(true);
-		localStorage.setItem('token',token);
-		this.router.navigate(['/dashboard']);
-		return Promise.resolve(true);
-	}
-
 	removeUser(token:string): Promise<any>{
 		let url = `${this.BASE_URL}/delete`;
 		let headers = new Headers({
@@ -68,14 +48,41 @@ export class AuthService {
 		                .catch(this.handleError);
 	}
 
+	refresh(token:string){
+		let url = `${this.BASE_URL}/refresh`;
+		let data = { 'token':token }
+		this.http.post(url,data,{headers:this.headers})
+				.toPromise()
+				.then(res => res.json().token)
+				.then(token => this.loginSuccess(token))
+				.catch(err => this.logout())
+				.catch(err => this.handleError);
+	}
+
+	loginSuccess(token:string){
+		this.isAuthenticated.next(true);
+		localStorage.setItem('token',token);
+		this.delay(new JwtHelper().getTokenExpirationDate(token).getTime() - Date.now()-5000)
+			.then(()=>{
+				if (tokenNotExpired())
+					this.refresh(localStorage.getItem('token'));
+			})
+			.catch(err => this.handleError);
+		return Promise.resolve(true);
+	}
+
 	logout(){
 		localStorage.clear();
-		window.location.reload();
-		return Promise.reject("fail");
+		this.isAuthenticated.next(false);
+		this.router.navigate(['/blogs']);
 	}
 
 	private handleError(err:any):Promise<any> {
+	  console.log(err.message || err.data.message || err);
 	  return Promise.reject(err.message || err);
 	}
 
+	private delay(ms: number) {
+	    return new Promise(resolve => setTimeout(resolve, ms));
+	}
 }

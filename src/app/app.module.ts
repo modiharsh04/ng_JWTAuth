@@ -3,6 +3,7 @@ import { NgModule } from '@angular/core';
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import { FormsModule } from '@angular/forms';
 import { HttpModule }    from '@angular/http';
+import { AuthModule } from 'angular2-jwt';
 
 import { AppComponent } from './app.component';
 import { LoginComponent } from './components/login/login.component';
@@ -31,7 +32,8 @@ import { BlogsService } from './services/blogs.service';
     NgbModule.forRoot(),
     AppRoutingModule,
     FormsModule,
-    HttpModule
+    HttpModule,
+    AuthModule
   ],
   providers: [
     AuthService,

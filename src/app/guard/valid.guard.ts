@@ -1,17 +1,14 @@
 import { Injectable } from '@angular/core';
 import { CanActivate, Router } from '@angular/router';
-import { Observable } from 'rxjs/Observable';
+import { tokenNotExpired } from 'angular2-jwt';
 
 @Injectable()
 export class ValidGuard implements CanActivate{
   constructor(private router:Router){}
-  canActivate(): Observable<boolean> | Promise<boolean> | boolean {
-  	if (localStorage.getItem('token')) {
+  canActivate(): Promise<boolean> | boolean {
+  	if (tokenNotExpired())
   	  return true;
-  	}
-  	else {
-  	  this.router.navigate(['/login']);
-  	  return false;
-  	}
+	this.router.navigate(['/login']);
+	return false;
   }
 }

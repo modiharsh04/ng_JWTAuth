@@ -1,5 +1,8 @@
 import { Component, OnInit } from '@angular/core';
+import { JwtHelper } from 'angular2-jwt';
 import { AuthService } from '../../services/auth.service';
+import { BlogsService } from '../../services/blogs.service';
+import { User } from '../../models/user';
 
 @Component({
   selector: 'app-dashboard',
@@ -7,12 +10,16 @@ import { AuthService } from '../../services/auth.service';
   styleUrls: ['./dashboard.component.scss']
 })
 export class DashboardComponent implements OnInit {
+  user:User;
+  alrt:string = "";
 
-  constructor(private auth:AuthService) { }
+  constructor(private auth:AuthService,private blog:BlogsService) { }
 
   ngOnInit() {
-    let token = localStorage.getItem('token');
-    this.auth.verify(token);
+    this.blog.getUser(localStorage.getItem('token'))
+              .then(usr => {
+                this.user = usr;
+              }).catch(err => this.alrt='No user Found');
   }
 
   removeUser(){
