@@ -14,8 +14,6 @@ import { DashboardComponent } from './components/dashboard/dashboard.component';
 import { ValidGuard } from './guard/valid.guard'
 import { LoginGuard } from './guard/loginRedirect.gaurd';
 import { HeaderComponent } from './components/header/header.component';
-import { BlogsComponent } from './components/blogs/blogs.component';
-import { BlogsService } from './services/blogs.service';
 
 
 @NgModule({
@@ -24,8 +22,7 @@ import { BlogsService } from './services/blogs.service';
     LoginComponent,
     RegisterComponent,
     DashboardComponent,
-    HeaderComponent,
-    BlogsComponent,
+    HeaderComponent
   ],
   imports: [
     BrowserModule,
@@ -38,8 +35,7 @@ import { BlogsService } from './services/blogs.service';
   providers: [
     AuthService,
     ValidGuard,
-    LoginGuard,
-    BlogsService
+    LoginGuard
   ],
   bootstrap: [AppComponent]
 })

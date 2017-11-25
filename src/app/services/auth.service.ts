@@ -36,18 +36,6 @@ export class AuthService {
 		                .catch(this.handleError);
 	}
 
-	removeUser(token:string): Promise<any>{
-		let url = `${this.BASE_URL}/delete`;
-		let headers = new Headers({
-			'Content-Type': 'application/json',
-			Authorization: `${token}`
-		});
-		return this.http.delete(url,{headers : headers})
-						.toPromise()
-						.then(res => res.json().status)
-		                .catch(this.handleError);
-	}
-
 	refresh(token:string){
 		let url = `${this.BASE_URL}/refresh`;
 		let data = { 'token':token }
